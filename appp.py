@@ -34,7 +34,7 @@ app_mode = st.sidebar.radio("Select Section:", ["Live Prediction", "Model Compar
 if app_mode == "Live Prediction":
     st.sidebar.header("Input Cell Features")
     
-    # المدخلات الأساسية المتوافقة مع النوت بوك
+    # المدخلات الأساسية الـ 26 المتوافقة مع النوت بوك (بدون الميكروسكوب)
     cell_diameter_um = st.sidebar.number_input("cell_diameter_um", value=10.18)
     nucleus_area_pct = st.sidebar.number_input("nucleus_area_pct", value=43.54)
     chromatin_density = st.sidebar.number_input("chromatin_density", value=0.39)
@@ -60,23 +60,21 @@ if app_mode == "Live Prediction":
     magnification_x = st.sidebar.number_input("magnification_x", value=76.01)
     image_resolution_px = st.sidebar.number_input("image_resolution_px", value=336.24)
     
-    # معالجة المتغيرات الفئوية بطريقة متوافقة مع الترميز الرقمي (Label/Ordinal Encoding) لتجنب تعارض الأعمدة
     patient_age_group = st.sidebar.selectbox("Patient Age Group (0: Young, 1: Adult, 2: Elderly)", [0, 1, 2], index=1)
     patient_sex = st.sidebar.selectbox("Patient Sex (0: Female, 1: Male)", [0, 1], index=0)
-    microscope_model = st.sidebar.selectbox("Microscope Model (0: Olympus, 1: Zeiss)", [0, 1], index=0)
-
+    
     predict_button = st.sidebar.button("Predict Anomaly Status")
     st.subheader("Prediction Result:")
     
     if predict_button:
         if model is not None and scaler is not None:
-            # تجميع الفيتشرز بنفس الترتيب الدقيق للتدريب
+            # تجميع الـ 26 فيتشر بدقة تامة
             input_data = np.array([[
                 cell_diameter_um, nucleus_area_pct, chromatin_density, cytoplasm_ratio,
                 circularity, eccentricity, granularity_score, lobularity_score,
-                membrane_smoothness, cell_area_px, perimeter_px, mean_r, mean_g, mean_b,stain_intensity, wbc_count_per_ul, rbc_count_millions_per_ul, hemoglobin_g_dl,
-                hematocrit_pct, platelet_count_per_ul, mcv_fl, mchc_g_dl, magnification_x,
-                image_resolution_px, patient_age_group, patient_sex, microscope_model
+                membrane_smoothness, cell_area_px, perimeter_px, mean_r, mean_g, mean_b,
+                stain_intensity, wbc_count_per_ul, rbc_count_millions_per_ul, hemoglobin_g_dl,
+                hematocrit_pct, platelet_count_per_ul, mcv_fl, mchc_g_dl, magnification_x,image_resolution_px, patient_age_group, patient_sex
             ]])
             
             try:
